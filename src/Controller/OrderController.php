@@ -18,4 +18,16 @@ class OrderController
         header('Content-Type: application/json');
         echo json_encode($this->orderRepository->findAll());
     }
+
+    public function show(int $id): void
+    {
+        header('Content-Type: application/json');
+        $order = $this->orderRepository->findById($id);
+        if ($order) {
+            echo json_encode($order);
+        } else {
+            http_response_code(404);
+            echo json_encode(['error' => 'Order not found']);
+        }
+    }
 }
