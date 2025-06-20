@@ -1,0 +1,19 @@
+{
+    "name": "petr-k/order-management-api",
+    "description": "Simple REST API for managing orders",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "PetrK\\OrderManagementApi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Magda",
+            "email": "hromagda@centrum.cz"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
