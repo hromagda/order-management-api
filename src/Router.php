@@ -5,7 +5,6 @@ namespace OrderManagementApi;
 use OrderManagementApi\Controller\OrderController;
 use OrderManagementApi\Repository\InMemoryOrderRepository;
 use OrderManagementApi\Repository\DatabaseOrderRepository;
-use Dotenv\Dotenv;
 use PDO;
 use PDOException;
 
@@ -14,14 +13,6 @@ class Router
     public function handleRequest(): void
     {
         try {
-            // Načti .env
-            $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-            $dotenv->load();
-
-            // Ověř požadované proměnné
-            $dotenv->required(['DATA_SOURCE'])->allowedValues(['db', 'memory']);
-            $dotenv->required(['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS']);
-
             $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             $method = $_SERVER['REQUEST_METHOD'];
 
@@ -51,10 +42,6 @@ class Router
                 $this->sendNotFound();
             }
 
-        } catch (\Dotenv\Exception\ValidationException $e) {
-            http_response_code(500);
-            header('Content-Type: application/json');
-            echo json_encode(['error' => 'Environment variable validation failed', 'details' => $e->getMessage()]);
         } catch (PDOException $e) {
             http_response_code(500);
             header('Content-Type: application/json');
