@@ -1,0 +1,19 @@
+# Ignoruj .env soubor (citlivé údaje nepatří do repozitáře)
+.env
+
+# Composer závislosti (pokud bys nechtěla commitovat vendor)
+vendor/
+
+# Cache a logy (pokud máš)
+*.log
+*.cache
+
+# IDE a editor soubory
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS systémové soubory
+.DS_Store
+Thumbs.db
