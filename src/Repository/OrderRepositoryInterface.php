@@ -1,8 +1,8 @@
 <?php
 
-namespace PetrK\OrderManagementApi\Repository;
+namespace OrderManagementApi\Repository;
 
-use PetrK\OrderManagementApi\Model\Order;
+use OrderManagementApi\Model\Order;
 
 interface OrderRepositoryInterface
 {

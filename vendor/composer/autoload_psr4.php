@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'PetrK\\OrderManagementApi\\' => array($baseDir . '/src'),
+    'OrderManagementApi\\' => array($baseDir . '/src'),
 );

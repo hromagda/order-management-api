@@ -1,23 +1,23 @@
 <?php
 
-namespace PetrK\OrderManagementApi\Model;
+namespace OrderManagementApi\Model;
 
-class OrderItem
+class OrderItem implements \JsonSerializable
 {
-    private string $name;
-    private float $amount;
+    private string $productName;
+    private float $price;
 
-    public function __construct(string $name, float $amount)
+    public function __construct(string $productName, float $price)
     {
-        $this->name = $name;
-        $this->amount = $amount;
+        $this->productName = $productName;
+        $this->price = $price;
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
-            'name' => $this->name,
-            'amount' => $this->amount,
+            'productName' => $this->productName,
+            'price' => $this->price,
         ];
     }
 }

@@ -2,4 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-echo "Orders API is running!";
+use OrderManagementApi\Router;
+
+$router = new Router();
+$router->handleRequest();
