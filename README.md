@@ -9,18 +9,18 @@ Testovací PHP projekt demonstrující architekturu MVC s repozitářovým vzore
 
 ## Instalace  
 
-1. Naklonujte repozitář:  
+### 1. Naklonujte repozitář:  
 
    bash
    git clone https://github.com/uzivatel/order-management-api.git  
    cd order-management-api  
 
-2.Nainstalujte závislosti:  
+### 2.Nainstalujte závislosti:  
    
    bash  
    composer install  
 
-3.Zkopírujte konfigurační soubor a doplňte údaje:  
+### 3.Zkopírujte konfigurační soubor a doplňte údaje:  
 
   bash
   cp .env.sample .env  
@@ -32,7 +32,7 @@ Testovací PHP projekt demonstrující architekturu MVC s repozitářovým vzore
   DB_USER=root  
   DB_PASS=heslo  
   
-4.(Volitelné) Vytvořte databázové tabulky (např. pomocí těchto SQL příkazů):  
+### 4.(Volitelné) Vytvořte databázové tabulky (např. pomocí těchto SQL příkazů):  
 
 sql
 CREATE TABLE orders (  
