@@ -50,7 +50,7 @@ CREATE TABLE order_items (
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE  
 );  
 
-##Poznámka
+## Poznámka
 Soubor .env obsahuje citlivé údaje (např. hesla k databázi) a není verzován (je uveden v .gitignore).  
 
 Repozitář obsahuje soubor .env.sample jako vzor. Před spuštěním projektu si vytvořte vlastní .env:
