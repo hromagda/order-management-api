@@ -11,29 +11,11 @@ use PDOException;
 
 class Router
 {
-    private array $config;
+    private OrderRepositoryInterface $repository;
 
-    public function __construct(array $config)
+    public function __construct(OrderRepositoryInterface $repository)
     {
-        $this->config = $config;
-    }
-
-    private function createRepository(): OrderRepositoryInterface
-    {
-        if ($this->config['data_source'] === 'db') {
-            $pdo = new PDO(
-                'mysql:host=' . $this->config['db']['host'] . ';dbname=' . $this->config['db']['name'] . ';charset=utf8',
-                $this->config['db']['user'],
-                $this->config['db']['pass'],
-                [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                ]
-            );
-            return new DatabaseOrderRepository($pdo);
-        }
-
-        return new InMemoryOrderRepository();
+        $this->repository = $repository;
     }
 
     public function handleRequest(): void
@@ -42,8 +24,7 @@ class Router
             $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             $method = $_SERVER['REQUEST_METHOD'];
 
-            $repository = $this->createRepository();
-            $controller = new OrderController($repository);
+            $controller = new OrderController($this->repository);
 
             if ($method === 'GET' && preg_match('#^/orders/?$#', $path)) {
                 $controller->index();
@@ -54,20 +35,8 @@ class Router
                 $this->sendNotFound();
             }
 
-        } catch (PDOException $e) {
-            http_response_code(500);
-            header('Content-Type: application/json');
-            echo json_encode([
-                'error' => 'Database connection failed',
-                'details' => $e->getMessage()
-            ]);
         } catch (\Exception $e) {
-            http_response_code(500);
-            header('Content-Type: application/json');
-            echo json_encode([
-                'error' => 'Internal server error',
-                'details' => $e->getMessage()
-            ]);
+            $this->sendError($e);
         }
     }
 
@@ -76,5 +45,15 @@ class Router
         http_response_code(404);
         header('Content-Type: application/json');
         echo json_encode(['error' => 'Not Found']);
+    }
+
+    private function sendError(\Exception $e): void
+    {
+        http_response_code(500);
+        header('Content-Type: application/json');
+        echo json_encode([
+            'error' => 'Internal server error',
+            'details' => $e->getMessage()
+        ]);
     }
 }

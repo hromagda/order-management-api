@@ -21,7 +21,7 @@ class InMemoryOrderRepository implements OrderRepositoryInterface
                 'CZK',
                 'new',
                 [
-                    new OrderItem('Notebook', 1500.0),
+                    new OrderItem('Notebook', 1500.0)
                 ]
             ),
             new Order(
@@ -32,9 +32,9 @@ class InMemoryOrderRepository implements OrderRepositoryInterface
                 'CZK',
                 'paid',
                 [
-                    new OrderItem('Telefon', 2000.0),
+                    new OrderItem('Telefon', 2000.0)
                 ]
-            ),
+            )
         ];
     }
 
@@ -51,5 +51,10 @@ class InMemoryOrderRepository implements OrderRepositoryInterface
             }
         }
         return null;
+    }
+
+    public function findByIdWithItems(int $id): ?Order
+    {
+        return $this->findById($id);
     }
 }

@@ -12,4 +12,6 @@ interface OrderRepositoryInterface
     public function findAll(): array;
 
     public function findById(int $id): ?Order;
+
+    public function findByIdWithItems(int $id): ?Order;
 }

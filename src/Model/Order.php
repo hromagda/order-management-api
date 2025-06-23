@@ -10,6 +10,7 @@ class Order implements \JsonSerializable
     private float $total;
     private string $currency;
     private string $status;
+
     /** @var OrderItem[] */
     private array $items;
 
@@ -20,7 +21,7 @@ class Order implements \JsonSerializable
         float $total,
         string $currency,
         string $status,
-        array $items
+        array $items = []
     ) {
         $this->id = $id;
         $this->date = $date;
@@ -31,7 +32,7 @@ class Order implements \JsonSerializable
         $this->items = $items;
     }
 
-    public function jsonSerialize(): array
+    public function toArray(): array
     {
         return [
             'id' => $this->id,
@@ -40,7 +41,12 @@ class Order implements \JsonSerializable
             'total' => $this->total,
             'currency' => $this->currency,
             'status' => $this->status,
-            'items' => $this->items, // PHP automaticky zavolá jsonSerialize na OrderItem
+            'items' => array_map(fn($item) => $item->toArray(), $this->items),
         ];
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }
