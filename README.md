@@ -7,6 +7,15 @@ Testovací PHP projekt demonstrující architekturu MVC s repozitářovým vzore
 - MySQL (pokud používáte `DATA_SOURCE=db`)  
 - Composer  
 
+## Endpoints
+- `GET /orders` – seznam všech objednávek
+- `GET /orders/{id}` – detail objednávky
+
+## Návratové kódy
+- `200 OK` – úspěch
+- `404 Not Found` – objednávka nenalezena
+- `500 Internal Server Error` – chyba při načítání dat
+
 ## Instalace  
 
 ### 1. Naklonujte repozitář:  
@@ -54,3 +63,8 @@ CREATE TABLE order_items (
 Soubor .env obsahuje citlivé údaje (např. hesla k databázi) a není verzován (je uveden v .gitignore).  
 
 Repozitář obsahuje soubor .env.sample jako vzor. Před spuštěním projektu si vytvořte vlastní .env:
+
+Aplikace podporuje více datových zdrojů:
+- InMemory (default)
+- MySQL (pokud je nakonfigurováno)
+- API mock (pro ukázku)
