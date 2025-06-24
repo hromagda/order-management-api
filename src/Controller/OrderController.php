@@ -4,6 +4,8 @@ namespace OrderManagementApi\Controller;
 
 use OrderManagementApi\Repository\OrderRepositoryInterface;
 use OrderManagementApi\Exception\DatabaseException;
+use OrderManagementApi\Http\Request;
+use OrderManagementApi\Http\Response;
 
 class OrderController
 {
@@ -14,36 +16,30 @@ class OrderController
         $this->orderRepository = $orderRepository;
     }
 
-    public function index(): void
+    public function index(Request $req, Response $res): void
     {
-        header('Content-Type: application/json');
-
         try {
-            echo json_encode(
-                array_map(fn($order) => $order->toArray(), $this->orderRepository->findAll())
-            );
+            $orders = array_map(fn($o) => $o->toArray(), $this->orderRepository->findAll());
+            $res->setBody($orders);
         } catch (DatabaseException $e) {
-            http_response_code(500);
-            echo json_encode(['error' => $e->getMessage()]);
+            $res->setStatusCode(500)
+                ->setBody(['error' => $e->getMessage()]);
         }
     }
 
-    public function show(int $id): void
+    public function show(int $id, Request $req, Response $res): void
     {
-        header('Content-Type: application/json');
-
         try {
             $order = $this->orderRepository->findByIdWithItems($id);
-
             if ($order) {
-                echo json_encode($order->toArray());
+                $res->setBody($order->toArray());
             } else {
-                http_response_code(404);
-                echo json_encode(['error' => 'Order not found']);
+                $res->setStatusCode(404)
+                    ->setBody(['error' => 'Order not found']);
             }
         } catch (DatabaseException $e) {
-            http_response_code(500);
-            echo json_encode(['error' => $e->getMessage()]);
+            $res->setStatusCode(500)
+                ->setBody(['error' => $e->getMessage()]);
         }
     }
 }

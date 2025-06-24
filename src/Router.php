@@ -3,11 +3,9 @@
 namespace OrderManagementApi;
 
 use OrderManagementApi\Controller\OrderController;
-use OrderManagementApi\Repository\InMemoryOrderRepository;
-use OrderManagementApi\Repository\DatabaseOrderRepository;
 use OrderManagementApi\Repository\OrderRepositoryInterface;
-use PDO;
-use PDOException;
+use OrderManagementApi\Http\Request;
+use OrderManagementApi\Http\Response;
 
 class Router
 {
@@ -20,40 +18,39 @@ class Router
 
     public function handleRequest(): void
     {
-        try {
-            $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-            $method = $_SERVER['REQUEST_METHOD'];
+        $request = new Request();
+        $response = new Response();
 
+        // Zjisti požadovaný formát
+        $accept = $_SERVER['HTTP_ACCEPT'] ?? 'application/json';
+        if (str_contains($accept, 'application/xml')) {
+            $response->setFormat('xml');
+        } else {
+            $response->setFormat('json');
+        }
+
+        try {
+            $method = $request->getMethod();
+            $uri = $request->getUri();
             $controller = new OrderController($this->repository);
 
-            if ($method === 'GET' && preg_match('#^/orders/?$#', $path)) {
-                $controller->index();
-            } elseif ($method === 'GET' && preg_match('#^/orders/(\d+)$#', $path, $matches)) {
-                $orderId = (int) $matches[1];
-                $controller->show($orderId);
+            if ($method === 'GET' && preg_match('#^/orders/?$#', $uri)) {
+                $controller->index($request, $response);
+            } elseif ($method === 'GET' && preg_match('#^/orders/(\d+)$#', $uri, $m)) {
+                $controller->show($m[1], $request, $response);
             } else {
-                $this->sendNotFound();
+                $response->setStatusCode(404)
+                    ->setBody(['error' => 'Not Found'])
+                    ->send();
+                return;
             }
-
         } catch (\Exception $e) {
-            $this->sendError($e);
+            $response->setStatusCode(500)
+                ->setBody(['error' => 'Internal server error', 'details' => $e->getMessage()])
+                ->send();
+            return;
         }
-    }
 
-    private function sendNotFound(): void
-    {
-        http_response_code(404);
-        header('Content-Type: application/json');
-        echo json_encode(['error' => 'Not Found']);
-    }
-
-    private function sendError(\Exception $e): void
-    {
-        http_response_code(500);
-        header('Content-Type: application/json');
-        echo json_encode([
-            'error' => 'Internal server error',
-            'details' => $e->getMessage()
-        ]);
+        $response->send();
     }
 }
