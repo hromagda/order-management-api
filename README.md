@@ -1,6 +1,14 @@
 # order-management-api
 Testovací PHP projekt demonstrující architekturu MVC s repozitářovým vzorem. Aplikace obsahuje OrderController, repozitáře (včetně in-memory repository) a modely pro práci s objednávkami. Používá čisté PHP bez frameworku.
 
+## Struktura projektu
+- `src/Controller` – kontrolery (OrderController)
+- `src/Repository` – repozitáře a rozhraní pro datové zdroje
+- `src/Model` – modely objednávek a položek objednávek
+- `src/Database` – správa připojení k databázi a databázových služeb
+- `public/` – vstupní bod aplikace (index.php)
+- `bootstrap.php` – inicializační soubor aplikace
+
 ## Požadavky  
 
 - PHP >= 8.1 (s rozšířeními `ext-json`, `ext-pdo`)  
@@ -58,6 +66,13 @@ CREATE TABLE order_items (
     price DECIMAL(10, 2) NOT NULL,  
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE  
 );  
+
+## Spuštění
+Projekt lze spustit na lokálním serveru PHP:
+
+```bash
+php -S localhost:8000 -t public
+```
 
 ## Poznámka
 Soubor .env obsahuje citlivé údaje (např. hesla k databázi) a není verzován (je uveden v .gitignore).  

@@ -18,15 +18,18 @@ class Router
 
     public function handleRequest(): void
     {
+
         $request = new Request();
         $response = new Response();
 
         // Zjisti požadovaný formát
         $accept = $_SERVER['HTTP_ACCEPT'] ?? 'application/json';
-        if (str_contains($accept, 'application/xml')) {
+        if (str_contains($accept, 'application/json')) {
+            $response->setFormat('json');
+        } elseif (str_contains($accept, 'application/xml')) {
             $response->setFormat('xml');
         } else {
-            $response->setFormat('json');
+            $response->setFormat('json');  // výchozí formát
         }
 
         try {

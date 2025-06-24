@@ -2,10 +2,10 @@
 
 namespace OrderManagementApi\Controller;
 
-use OrderManagementApi\Repository\OrderRepositoryInterface;
 use OrderManagementApi\Exception\DatabaseException;
 use OrderManagementApi\Http\Request;
 use OrderManagementApi\Http\Response;
+use OrderManagementApi\Repository\OrderRepositoryInterface;
 
 class OrderController
 {

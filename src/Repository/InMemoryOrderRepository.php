@@ -34,6 +34,15 @@ class InMemoryOrderRepository implements OrderRepositoryInterface
                 [
                     new OrderItem('Telefon', 2000.0)
                 ]
+            ),
+            new Order(
+                3,
+                '2024-06-02',
+                'Objednávka bez položek',
+                0.0,
+                'CZK',
+                'pending',
+                []
             )
         ];
     }

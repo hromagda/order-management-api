@@ -45,6 +45,16 @@ class Order implements \JsonSerializable
         ];
     }
 
+public function getId(): int
+{
+    return $this->id;
+}
+
+    public function getItems(): array
+    {
+        return $this->items;
+    }
+
     public function jsonSerialize(): array
     {
         return $this->toArray();

@@ -2,11 +2,11 @@
 
 namespace OrderManagementApi\Repository;
 
-use PDO;
-use PDOException;
+use OrderManagementApi\Exception\DatabaseException;
 use OrderManagementApi\Model\Order;
 use OrderManagementApi\Model\OrderItem;
-use OrderManagementApi\Exception\DatabaseException;
+use PDO;
+use PDOException;
 
 class DatabaseOrderRepository implements OrderRepositoryInterface
 {
