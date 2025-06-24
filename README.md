@@ -74,6 +74,10 @@ Projekt lze spustit na lokálním serveru PHP:
 php -S localhost:8000 -t public
 ```
 
+## Testování
+
+Projekt obsahuje základní jednotkové testy (PHPUnit) pro repozitáře a kontroler OrderController.
+
 ## Poznámka
 Soubor .env obsahuje citlivé údaje (např. hesla k databázi) a není verzován (je uveden v .gitignore).  
 
