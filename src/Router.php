@@ -7,22 +7,37 @@ use OrderManagementApi\Repository\OrderRepositoryInterface;
 use OrderManagementApi\Http\Request;
 use OrderManagementApi\Http\Response;
 
+/**
+ * Třída Router je zodpovědná za směrování HTTP požadavků
+ * na správné metody controlleru podle URI a HTTP metody.
+ */
 class Router
 {
     private OrderRepositoryInterface $repository;
 
+    /**
+     * Konstruktor Routeru.
+     *
+     * @param OrderRepositoryInterface $repository Repository s daty objednávek,
+     *                                                které bude controller používat.
+     */
     public function __construct(OrderRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
 
+    /**
+     * Zpracuje HTTP požadavek, vybere odpovídající controller a akci,
+     * nastaví formát odpovědi (JSON/XML) a odešle odpověď klientovi.
+     *
+     * @return void
+     */
     public function handleRequest(): void
     {
-
         $request = new Request();
         $response = new Response();
 
-        // Zjisti požadovaný formát
+        // Zjistí požadovaný formát odpovědi podle hlavičky Accept
         $accept = $_SERVER['HTTP_ACCEPT'] ?? 'application/json';
         if (str_contains($accept, 'application/json')) {
             $response->setFormat('json');

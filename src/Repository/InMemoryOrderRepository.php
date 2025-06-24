@@ -7,9 +7,16 @@ use OrderManagementApi\Model\OrderItem;
 
 class InMemoryOrderRepository implements OrderRepositoryInterface
 {
-    /** @var Order[] */
+    /**
+     * Pole objednávek uložených v paměti
+     *
+     * @var Order[]
+     */
     private array $orders;
 
+    /**
+     * Konstruktor, inicializuje demo data
+     */
     public function __construct()
     {
         $this->orders = [
@@ -47,11 +54,22 @@ class InMemoryOrderRepository implements OrderRepositoryInterface
         ];
     }
 
+    /**
+     * Vrátí všechny objednávky
+     *
+     * @return Order[] Pole objednávek
+     */
     public function findAll(): array
     {
         return $this->orders;
     }
 
+    /**
+     * Najde objednávku podle ID
+     *
+     * @param int $id ID objednávky
+     * @return Order|null Objednávka nebo null, pokud není nalezena
+     */
     public function findById(int $id): ?Order
     {
         foreach ($this->orders as $order) {
@@ -62,6 +80,14 @@ class InMemoryOrderRepository implements OrderRepositoryInterface
         return null;
     }
 
+    /**
+     * Najde objednávku včetně položek podle ID
+     *
+     * V InMemory repository vrací totéž jako findById, protože položky jsou již součástí objektu.
+     *
+     * @param int $id ID objednávky
+     * @return Order|null Objednávka nebo null, pokud není nalezena
+     */
     public function findByIdWithItems(int $id): ?Order
     {
         return $this->findById($id);

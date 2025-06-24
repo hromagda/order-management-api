@@ -7,13 +7,27 @@ use OrderManagementApi\Model\OrderItem;
 
 class ApiOrderRepository implements OrderRepositoryInterface
 {
+    /**
+     * URL API endpointu
+     * @var string
+     */
     private string $apiUrl;
 
+    /**
+     * Konstruktor repozitáře
+     *
+     * @param string $apiUrl Základní URL API
+     */
     public function __construct(string $apiUrl)
     {
         $this->apiUrl = $apiUrl;
     }
 
+    /**
+     * Vrátí všechny objednávky načtené z API
+     *
+     * @return Order[] Pole objektů objednávek
+     */
     public function findAll(): array
     {
         $json = file_get_contents($this->apiUrl . '/orders');
@@ -35,6 +49,12 @@ class ApiOrderRepository implements OrderRepositoryInterface
         return $orders;
     }
 
+    /**
+     * Najde objednávku podle ID
+     *
+     * @param int $id ID objednávky
+     * @return Order|null Vrátí objednávku nebo null, pokud nebyla nalezena
+     */
     public function findById(int $id): ?Order
     {
         $json = @file_get_contents($this->apiUrl . "/orders/{$id}");
@@ -54,6 +74,12 @@ class ApiOrderRepository implements OrderRepositoryInterface
         );
     }
 
+    /**
+     * Najde objednávku podle ID včetně položek
+     *
+     * @param int $id ID objednávky
+     * @return Order|null
+     */
     public function findByIdWithItems(int $id): ?Order
     {
         return $this->findById($id);

@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Hlavní vstupní bod aplikace.
+ *
+ * Načítá bootstrap konfiguraci a na základě ní vytváří odpovídající repozitář objednávek.
+ * Inicializuje router a předává mu repozitář pro zpracování HTTP požadavků.
+ */
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $bootstrap = require __DIR__ . '/../bootstrap.php';
@@ -9,11 +16,11 @@ use OrderManagementApi\Repository\DatabaseOrderRepository;
 use OrderManagementApi\Repository\InMemoryOrderRepository;
 use OrderManagementApi\Repository\ApiOrderRepository;
 
-// Získáme konfiguraci a PDO
+// Získá konfiguraci a PDO
 $config = $bootstrap['config'];
 $pdo = $bootstrap['pdo'];
 
-// Rozhodni, jaký repozitář použít
+// Rozhodne, jaký repozitář použít
 if ($config['data_source'] === 'db') {
     $repository = new DatabaseOrderRepository($pdo);
 } elseif ($config['data_source'] === 'api') {

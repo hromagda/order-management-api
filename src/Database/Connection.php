@@ -7,6 +7,16 @@ use PDOException;
 
 class Connection
 {
+    /**
+     * Vytvoří a vrátí PDO připojení k databázi podle konfigurace.
+     *
+     * @param array $config Konfigurace připojení obsahující klíče:
+     *                      - host: adresa databázového serveru
+     *                      - name: název databáze
+     *                      - user: uživatelské jméno
+     *                      - pass: heslo
+     * @return PDO Vrací PDO instanci připojení k databázi
+     */
     public static function create(array $config): PDO
     {
         $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8mb4', $config['host'], $config['name']);

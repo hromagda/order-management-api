@@ -4,6 +4,15 @@ namespace OrderManagementApi\Database;
 
 class DatabaseConfig
 {
+    /**
+     * Načte konfiguraci databáze z prostředí ($_ENV).
+     *
+     * @return array Pole s konfigurací obsahující klíče:
+     *               - host: adresa databázového serveru
+     *               - name: název databáze
+     *               - user: uživatelské jméno
+     *               - pass: heslo
+     */
     public static function load(): array
     {
         return [

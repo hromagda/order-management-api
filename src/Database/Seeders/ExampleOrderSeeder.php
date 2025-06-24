@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Seeder pro naplnění databáze ukázkovými daty objednávek a položek.
+ *
+ * Skript smaže existující data v tabulkách orders a items,
+ * a vloží nové testovací objednávky a položky k nim.
+ *
+ * Používá PDO připojení z bootstrapu.
+ */
+
 require_once __DIR__ . '/../../../vendor/autoload.php';
 $bootstrap = require __DIR__ . '/../../../bootstrap.php';
 
@@ -60,7 +69,7 @@ try {
         ]);
     }
 
-    // Potvrdítransakci
+    // Potvrdí transakci
     $pdo->commit();
 
     echo "✅ Seeder úspěšně dokončen!\n";

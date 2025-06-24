@@ -2,37 +2,93 @@
 
 namespace OrderManagementApi\Http;
 
+/**
+ * Třída reprezentující HTTP odpověď.
+ */
 class Response
 {
+    /**
+     * HTTP status kód odpovědi.
+     *
+     * @var int
+     */
     private int $statusCode = 200;
+
+    /**
+     * Hlavičky HTTP odpovědi.
+     *
+     * @var array<string,string>
+     */
     private array $headers = [];
+
+    /**
+     * Tělo odpovědi, libovolný datový typ.
+     *
+     * @var mixed
+     */
     private mixed $body;
+
+    /**
+     * Formát výstupu (json, xml, text).
+     *
+     * @var string
+     */
     private string $format = 'json';  // výchozí formát
 
+    /**
+     * Nastaví HTTP status kód odpovědi.
+     *
+     * @param int $code HTTP status kód
+     * @return $this
+     */
     public function setStatusCode(int $code): self
     {
         $this->statusCode = $code;
         return $this;
     }
 
+    /**
+     * Nastaví HTTP hlavičku odpovědi.
+     *
+     * @param string $name Název hlavičky
+     * @param string $value Hodnota hlavičky
+     * @return $this
+     */
     public function setHeader(string $name, string $value): self
     {
         $this->headers[$name] = $value;
         return $this;
     }
 
+    /**
+     * Nastaví tělo odpovědi.
+     *
+     * @param mixed $body Data těla odpovědi
+     * @return $this
+     */
     public function setBody(mixed $body): self
     {
         $this->body = $body;
         return $this;
     }
 
+    /**
+     * Nastaví formát výstupu odpovědi.
+     *
+     * @param string $format Formát výstupu (json, xml, text)
+     * @return $this
+     */
     public function setFormat(string $format): self
     {
         $this->format = $format;
         return $this;
     }
 
+    /**
+     * Odešle HTTP odpověď klientovi.
+     *
+     * @return void
+     */
     public function send(): void
     {
         http_response_code($this->statusCode);
@@ -55,13 +111,27 @@ class Response
         echo $output;
     }
 
-    private function toXml($data, $rootElement = 'response'): string
+    /**
+     * Převod pole nebo objektu na XML string.
+     *
+     * @param mixed $data Data k převodu
+     * @param string $rootElement Kořenový element XML
+     * @return string XML reprezentace dat
+     */
+    private function toXml($data, string $rootElement = 'response'): string
     {
         $xml = new \SimpleXMLElement("<?xml version=\"1.0\"?><{$rootElement}></{$rootElement}>");
         $this->arrayToXml($data, $xml);
         return $xml->asXML();
     }
 
+    /**
+     * Rekurzivní pomocná metoda pro převod pole na XML elementy.
+     *
+     * @param mixed $data Data k převodu
+     * @param \SimpleXMLElement $xml XML element, do kterého se vkládá
+     * @return void
+     */
     private function arrayToXml($data, \SimpleXMLElement &$xml): void
     {
         foreach ($data as $key => $value) {

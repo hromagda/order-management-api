@@ -10,13 +10,28 @@ use PDOException;
 
 class DatabaseOrderRepository implements OrderRepositoryInterface
 {
+    /**
+     * PDO instance pro přístup do DB
+     * @var PDO
+     */
     private PDO $pdo;
 
+    /**
+     * Konstruktor
+     *
+     * @param PDO $pdo PDO instance připojení k databázi
+     */
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * Načte všechny objednávky z databáze
+     *
+     * @return Order[] Pole objednávek
+     * @throws DatabaseException V případě chyby v DB dotazu
+     */
     public function findAll(): array
     {
         try {
@@ -29,6 +44,13 @@ class DatabaseOrderRepository implements OrderRepositoryInterface
         }
     }
 
+    /**
+     * Najde objednávku podle ID
+     *
+     * @param int $id ID objednávky
+     * @return Order|null Vrací objednávku nebo null, pokud neexistuje
+     * @throws DatabaseException V případě chyby v DB dotazu
+     */
     public function findById(int $id): ?Order
     {
         try {
@@ -42,6 +64,13 @@ class DatabaseOrderRepository implements OrderRepositoryInterface
         }
     }
 
+    /**
+     * Najde objednávku včetně položek podle ID
+     *
+     * @param int $id ID objednávky
+     * @return Order|null Vrací objednávku s položkami nebo null, pokud neexistuje
+     * @throws DatabaseException V případě chyby v DB dotazu
+     */
     public function findByIdWithItems(int $id): ?Order
     {
         try {
@@ -71,6 +100,7 @@ class DatabaseOrderRepository implements OrderRepositoryInterface
                 }
             }
 
+            // Vytvoří nový objekt Order s přidanými položkami
             return new Order(
                 $order->toArray()['id'],
                 $order->toArray()['date'],
@@ -85,6 +115,12 @@ class DatabaseOrderRepository implements OrderRepositoryInterface
         }
     }
 
+    /**
+     * Mapuje pole z DB na entitu Order
+     *
+     * @param array $row Data z DB
+     * @return Order
+     */
     private function mapRowToOrder(array $row): Order
     {
         return new Order(
@@ -92,7 +128,7 @@ class DatabaseOrderRepository implements OrderRepositoryInterface
             $row['created_at'],
             $row['customer_name'],
             (float)$row['total_amount'],
-            'CZK',
+            'CZK',          // pevná měna
             $row['status']
         );
     }
